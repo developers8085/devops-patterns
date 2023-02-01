@@ -45,7 +45,7 @@ Resources:
         EnvironmentVariables:
           - Name: DIR
             Type: PLAINTEXT
-            Value: /iam/roles
+            Value: iam/roles
           
       LogsConfig :
         CloudWatchLogs :
