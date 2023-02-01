@@ -16,7 +16,7 @@ function stack_creation(){
     --stack-name $1 \
     --template-body file://$DIR/$2 \
     --capabilities CAPABILITY_NAMED_IAM \
-    --parameters file://$DIR/parameters.json \
+    # --parameters file://$DIR/parameters.json \
     --tags file://$DIR/tags.json \
     --region $3
     # | jq -r .StackId \
