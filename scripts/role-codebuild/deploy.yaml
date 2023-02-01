@@ -8,4 +8,4 @@ phases:
   build:
     commands:
     - ls
-    - scripts/role-codebuil/deploy.sh
+    - scripts/role-codebuild/deploy.sh
