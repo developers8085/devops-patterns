@@ -7,15 +7,17 @@ function stack_creation(){
         echo "No STACK_NAME argument supplied"
         exit 1
     fi
-    echo {$DIR}
+    echo $DIR
     echo "Creating stack..."
+    echo ${STACK_NAME}
+    # echo ${DIR}
     STACK_ID=$( \
     aws cloudformation create-stack \
-    --stack-name ${STACK_NAME} \
-    --template-body file://${DIR}/$2 \
-    --capabilities CAPABILITY_IAM \
-    --parameters file://${DIR}/parameters.json \
-    --tags file://${DIR}/tags.json \
+    --stack-name $1 \
+    --template-body file://$DIR/$2 \
+    --capabilities CAPABILITY_NAMED_IAM \
+    --parameters file://$DIR/parameters.json \
+    --tags file://$DIR/tags.json \
     --region $3
     # | jq -r .StackId \
     )
@@ -25,4 +27,4 @@ function stack_creation(){
     # | jq .Stacks[0].Outputs
 }
 
-stack_creation ec2InstanceProfile ec2InstanceProfile.yaml us-east-1
+stack_creation ec2InstanceProfile ec2InstanceProfile.yaml us-east-1 
