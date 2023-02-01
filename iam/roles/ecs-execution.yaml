@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: IAM role for ECS  to create AWS resources
+Resources:
+  RootRole:
+    Type: 'AWS::IAM::Role'
+    Description: IAM role for ECS Service to create AWS resources
+    Properties:
+      RoleName: !Sub "${AWS::StackName}ECSExecutionRole"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ecs.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      MaxSessionDuration: 43200
+Outputs: 
+  CloudFormationEc2RoleArn:
+    Description: ECSExecutionRoleArn
+    Value: !GetAtt [RootRole, Arn]
+    Export:
+      Name: !Sub "${AWS::StackName}ECSExecutionRole"

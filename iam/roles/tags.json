@@ -1,0 +1,18 @@
+[
+    {
+      "Key": "app",
+      "Value": "development"
+    },
+    {
+      "Key": "team",
+      "Value": "dev team"
+    },
+    {
+      "Key": "env",
+      "Value": "dev"
+    },
+    {
+      "Key": "created_by",
+      "Value": "jadavsuresh"
+    }
+  ]

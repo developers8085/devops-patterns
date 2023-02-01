@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: IAM Policy to manage cloudformation stacks
+Resources:
+  pParameterSeceret:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+      Description: IAM Policy to manage cloudformation stacks
+      Path: /
+      ManagedPolicyName: "${Stack::Name}-cloudformation-read-policy"
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Sid: CloudFormationManage
+          Effect: Allow
+          Action: 
+            - cloudformation:CancelUpdateStack
+            - cloudformation:RollbackStack
+            - cloudformation:CreateStack
+            - cloudformation:DeleteStack
+            - cloudformation:TagResource
+            - cloudformation:UpdateStack
+          Resource: 
+            - arn:aws:cloudformation:us-east-1:280062391276:stack/development*/*
+            - arn:aws:cloudformation:us-east-1:280062391276:stackset/development*:*
+        - Sid: CloudformationListStacks
+          Effect: Allow
+          Action: 
+            - cloudformation:CreateStackSet
+          Resource: *

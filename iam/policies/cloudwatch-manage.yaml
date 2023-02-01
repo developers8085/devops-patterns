@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: IAM Policy to manage cloudwatch logs
+Resources:
+  pParameterSeceret:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+      Description: IAM Policy to manage cloudwatch logs
+      Path: /
+      ManagedPolicyName: "${Stack::Name}-cloudwatch-manage-policy"
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Sid: CloudWatchGroupCreation
+          Effect: Allow
+          Action: 
+            - logs:PutMetricFilter
+            - logs:CreateLogStream
+            - logs:PutSubscriptionFilter
+            - logs:PutRetentionPolicy
+            - logs:CreateLogGroup
+          Resource: arn:aws:logs:us-east-1:280062391276:log-group:development*
+        - Sid: CloudWatchPutLogEvents
+          Effect: Allow
+          Action: 
+            - logs:PutLogEventsd
+          Resource: arn:aws:logs:us-east-1:280062391276:log-group:development*:log-stream:*

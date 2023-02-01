@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: IAM Policy to read secrets from secret mananger
+Resources:
+  pParameterSeceret:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+      Description: IAM Policy to read secrets from secret mananger
+      Path: /
+      ManagedPolicyName: "${Stack::Name}-parameter-read-policy"
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Sid: ParameterRead
+          Effect: Allow
+          Action: secretsmanager:GetSecretValue
+          Resource: arn:aws:secretsmanager:us-east-1:280062391276:secret:development*

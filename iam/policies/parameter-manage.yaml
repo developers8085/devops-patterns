@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: IAM Policy to manage secrets from secret mananger
+Resources:
+  pParameterSeceret:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+      Description: IAM Policy to manage secrets from secret mananger
+      Path: /
+      ManagedPolicyName: "${Stack::Name}-parameter-manage-policy"
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Sid: ParameterManage
+          Effect: Allow
+          Action: 
+            - secretsmanager:PutSecretValue
+            - secretsmanager:CreateSecret
+            - secretsmanager:TagResource
+            - secretsmanager:UpdateSecret
+          Resource: arn:aws:secretsmanager:us-east-1:280062391276:secret:development*

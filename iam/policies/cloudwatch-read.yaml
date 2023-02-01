@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: IAM Policy to read cloudwatch logs
+Resources:
+  pParameterSeceret:
+    Type: 'AWS::IAM::ManagedPolicy'
+    Properties:
+      Description: IAM Policy to read cloudwatch logs
+      Path: /
+      ManagedPolicyName: "${Stack::Name}-cloudwatch-read-policy"
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Sid: CloudWatchRead
+          Effect: Allow
+          Action: 
+            - logs:GetLogEvents
+          Resource: arn:aws:logs:us-east-1:280062391276:log-group:development*:log-stream:*
+        - Sid: CloudWatchDescribeLogsgroup
+          Effect: Allow
+          Action: 
+            - logs:GetLogRecord
+          Resource: *
+        - Sid: CloudWatchDescribeLogsStream
+          Effect: Allow
+          Action: 
+            - logs:DescribeLogStreams
+            - logs:FilterLogEvents
+            - logs:DescribeLogGroups
+          Resource: arn:aws:logs:us-east-1:280062391276:log-group:development*

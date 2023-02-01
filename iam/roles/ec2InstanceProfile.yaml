@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: IAM role for EC2 Instance cowert role
+Resources:
+  RootRole:
+    Type: 'AWS::IAM::Role'
+    Description: IAM role for EC2 Instance cowert role
+    Properties:
+      RoleName: !Sub "${AWS::StackName}CloudformationEC2Role"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::280062391276:policy/codepipeline-policy
+        - arn:aws:iam::280062391276:policy/service-role/AWSCodePipelineServiceRole-ap-south-1-prod-nodejs-app
+        - arn:aws:iam::280062391276:policy/service-role/AWSLambdaBasicExecutionRole-50500fb2-2c40-4e7d-89ed-96eeabd3955e
+      MaxSessionDuration: 43200
+  RootInstanceProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      Path: /
+      Roles:
+        - !Ref RootRole
+    DependsOn: RootRole
+Outputs: 
+  CloudFormationEc2RoleArn:
+    Description: CloudFormationEc2RoleArn
+    Value: !GetAtt [RootRole, Arn]
+    Export:
+      Name: !Sub "${AWS::StackName}CloudformationEC2Role"
