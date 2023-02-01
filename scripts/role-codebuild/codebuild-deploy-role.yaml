@@ -1,0 +1,71 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Metadata:
+  License: Apache-2.0
+Description: 'AWS CloudFormation Template For Main Codebuild Creation'
+Parameters:
+  pVpcId :
+    Type: String
+    Default: vpc-0c0903aaa5c91689c
+    Description: VPC Id
+  pSubnet1 :
+    Type: String
+    Default: subnet-01990050b25e525a0
+    Description:  Subnet1
+  pSubnet2 :
+    Type: String
+    Default: subnet-0a02761b8db457ef2
+    Description: Subnet2
+  pSubnet3 :
+    Type: String
+    Default: subnet-057e577678bb35126
+    Description: Subnet3
+  pWebSg :
+    Type: String
+    Default: sg-0e3414de7eb369a09
+    Description: Security Group
+Resources:
+  rLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/codebuild/roles-codebuild-infrastructure'
+      RetentionInDays: 30
+  rCodebuildCiCd:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name : CodeBuild-Demo
+      Description: CodeBuild Demo for CiCd Integration
+      Artifacts :
+        Type: NO_ARTIFACTS
+      ServiceRole : arn:aws:iam::280062391276:role/codebuild-service-role
+      Environment :
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
+        PrivilegedMode: true
+        EnvironmentVariables:
+          - Name: DIR
+            Type: PLAINTEXT
+            Value: /iam/roles
+          
+      LogsConfig :
+        CloudWatchLogs :
+          GroupName : !Ref rLogGroup
+          Status : ENABLED
+        # S3Logs:
+        #   EncryptionDisabled: false
+        #   Location: cloudformation-8085/codebuild-logs
+        #   Status: ENABLED
+      TimeoutInMinutes : 1
+      Source:
+        ReportBuildStatus: true
+        Location: 'https://github.com/developers8085/devops-patterns.git'
+        Type: GITHUB_ENTERPRISE
+        BuildSpec: iac/roles/deploy.yaml
+      SourceVersion : master
+      VpcConfig:
+        VpcId: !Ref pVpcId
+        Subnets:
+          - !Ref pSubnet1
+          - !Ref pSubnet2
+          - !Ref pSubnet3
+        SecurityGroupIds: [!Ref pWebSg]
