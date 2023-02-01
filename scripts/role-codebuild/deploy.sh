@@ -27,4 +27,7 @@ function stack_creation(){
     # | jq .Stacks[0].Outputs
 }
 
-stack_creation ec2InstanceProfile ec2InstanceProfile.yaml us-east-1 
+stack_creation ec2InstanceProfile ec2InstanceProfile.yaml us-east-1
+stack_creation codebuild codebuild.yaml us-east-1
+stack_creation ecs-execution ecs-execution.yaml us-east-1
+stack_creation ecs-task-execution ecs-task-execution.yaml us-east-1 
